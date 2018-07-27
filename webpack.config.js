@@ -2,6 +2,7 @@
     ./webpack.config.js
 */
 const path = require("path");
+const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
   template: "./client/index.html",
@@ -12,7 +13,32 @@ module.exports = {
   entry: "./client/index.js",
   output: {
     path: path.resolve("dist"),
-    filename: "index_bundle.js"
+    filename: "main.js",
+    chunkFilename: "[name].js"
+  },
+  optimization: {
+    minimizer: [
+      new UglifyJsPlugin({
+        uglifyOptions: {
+          mangle: {
+            keep_fnames: true
+          }
+        }
+      })
+    ],
+    splitChunks: {
+      cacheGroups: {
+        default: false,
+        vendors: false,
+        // vendor chunk
+        vendor: {
+          // async + async chunks
+          chunks: "all",
+          // import file path containing node_modules
+          test: /node_modules/
+        }
+      }
+    }
   },
   module: {
     rules: [
