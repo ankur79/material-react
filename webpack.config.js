@@ -63,5 +63,13 @@ module.exports = {
       }
     ]
   },
-  plugins: [HtmlWebpackPluginConfig]
+  devServer: {
+    historyApiFallback: true,
+  },
+  // plugins: [HtmlWebpackPluginConfig]
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: 'client/index.html'
+    })
+  ]
 };
